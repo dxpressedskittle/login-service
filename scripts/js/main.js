@@ -22,7 +22,43 @@ let buttons = [
     }
 ];
 
+let loginButton = {
+    id: 'loginButton',
+    text: 'Login',
+    onClick: function() {
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+        if (username === 'user' && password === 'pass') {
+            window.location.href = 'dashboard.html';
+        } else {
+            alert('Incorrect username or password');
+        }
+    }
+};
+
+buttons.push(loginButton);
+
 let initialized = false;
+
+function createLoginForm() {
+    let form = document.createElement('form');
+    form.id = 'loginForm';
+
+    let usernameInput = document.createElement('input');
+    usernameInput.type = 'text';
+    usernameInput.id = 'username';
+    usernameInput.placeholder = 'Username';
+
+    let passwordInput = document.createElement('input');
+    passwordInput.type = 'password';
+    passwordInput.id = 'password';
+    passwordInput.placeholder = 'Password';
+
+    form.appendChild(usernameInput);
+    form.appendChild(passwordInput);
+
+    document.body.appendChild(form);
+}
 
 function initializeUI() {
     if (initialized) {
@@ -30,6 +66,8 @@ function initializeUI() {
     };
 
     initialized = true;
+
+    createLoginForm();
 
     buttons.forEach(button => {
         let btnElement = document.createElement('button');
