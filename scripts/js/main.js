@@ -40,34 +40,12 @@ buttons.push(loginButton);
 
 let initialized = false;
 
-function createLoginForm() {
-    let form = document.createElement('form');
-    form.id = 'loginForm';
-
-    let usernameInput = document.createElement('input');
-    usernameInput.type = 'text';
-    usernameInput.id = 'username';
-    usernameInput.placeholder = 'Username';
-
-    let passwordInput = document.createElement('input');
-    passwordInput.type = 'password';
-    passwordInput.id = 'password';
-    passwordInput.placeholder = 'Password';
-
-    form.appendChild(usernameInput);
-    form.appendChild(passwordInput);
-
-    document.body.appendChild(form);
-}
-
 function initializeUI() {
     if (initialized) {
         return;
     };
 
     initialized = true;
-
-    createLoginForm();
 
     buttons.forEach(button => {
         let btnElement = document.createElement('button');
