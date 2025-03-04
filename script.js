@@ -1,4 +1,4 @@
-@@ -0,0 +1,71 @@
+
 // Local storage to hold user data
 const usersDB = JSON.parse(localStorage.getItem("usersDB")) || [];
 
