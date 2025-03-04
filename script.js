@@ -1,3 +1,8 @@
+@@ -0,0 +1,71 @@
+// Local storage to hold user data
+const usersDB = JSON.parse(localStorage.getItem("usersDB")) || [];
+
+// DOM Elements
 const loginScreen = document.getElementById("login-screen");
 const registerScreen = document.getElementById("register-screen");
 const dashboardScreen = document.getElementById("dashboard");
@@ -24,62 +29,44 @@ showLoginLink.addEventListener("click", (e) => {
 });
 
 // Handle Register
-registerForm.addEventListener("submit", async (e) => {
+registerForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const username = document.getElementById("register-username").value;
     const password = document.getElementById("register-password").value;
 
-    try {
-        const response = await fetch('http://localhost:5000/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            alert("User registered successfully!");
-            registerScreen.style.display = "none";
-            loginScreen.style.display = "block";
-        } else {
-            alert(result.error);
-        }
-    } catch (error) {
-        alert("Error: " + error.message);
+    // Check if user already exists
+    if (usersDB.find(user => user.username === username)) {
+        alert("User already exists!");
+    } else {
+        usersDB.push({ username, password });
+        localStorage.setItem("usersDB", JSON.stringify(usersDB));
+        alert("User registered successfully!");
+        registerScreen.style.display = "none";
+        loginScreen.style.display = "block";
     }
 });
 
 // Handle Login
-loginForm.addEventListener("submit", async (e) => {
+loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const username = document.getElementById("login-username").value;
     const password = document.getElementById("login-password").value;
 
-    try {
-        const response = await fetch('http://localhost:5000/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password }),
-        });
+    // Validate user
+    const user = usersDB.find(user => user.username === username && user.password === password);
 
-        const result = await response.json();
-        if (response.ok) {
-            localStorage.setItem('authToken', result.token); // Store JWT token
-            loginScreen.style.display = "none";
-            dashboardScreen.style.display = "block";
-        } else {
-            alert(result.error);
-        }
-    } catch (error) {
-        alert("Error: " + error.message);
+    if (user) {
+        loginScreen.style.display = "none";
+        dashboardScreen.style.display = "block";
+    } else {
+        alert("Invalid credentials!");
     }
 });
 
 // Handle Logout
 logoutButton.addEventListener("click", () => {
-    localStorage.removeItem('authToken');
     dashboardScreen.style.display = "none";
     loginScreen.style.display = "block";
 });
